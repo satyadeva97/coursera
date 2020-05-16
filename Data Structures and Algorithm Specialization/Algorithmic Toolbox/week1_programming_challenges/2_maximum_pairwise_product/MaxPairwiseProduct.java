@@ -1,25 +1,40 @@
 import java.util.*;
 import java.io.*;
-
 public class MaxPairwiseProduct {
-    static int getMaxPairwiseProduct(int[] numbers) {
-        int max_product = 0;
+	static long getMaxPairwiseProduct(int[] numbers) {
+ //       int max_suspect = 0;
         int n = numbers.length;
-
-        for (int first = 0; first < n; ++first) {
-            for (int second = first + 1; second < n; ++second) {
-                max_product = max(max_product,
-                    numbers[first] * numbers[second]);
-            }
-        }
-
-        return max_product;
+	int temp = 0;
+	int j=0;
+	while(j<=1) {
+	for( int i=1; i<n-j;i++){
+/*		if(numbers[i]==numbers[i-1]) {
+			max_suspect = numbers[i];
+		}*/
+		if(numbers[i]<numbers[i-1]){
+			temp = numbers[i-1];
+			numbers[i-1] = numbers[i];
+			numbers[i] = temp;
+		}
+	}
+	j++;
+	}
+/*	if(max_suspect == numbers[n-1]) {
+		return ((long)max_suspect*(long)max_suspect);
+	}*/
+//	else {
+	return ((long)numbers[n-1]*numbers[n-2]);
+//	}
+//        return max_product;
     }
 
     public static void main(String[] args) {
+    	
         FastScanner scanner = new FastScanner(System.in);
+        
         int n = scanner.nextInt();
         int[] numbers = new int[n];
+        
         for (int i = 0; i < n; i++) {
             numbers[i] = scanner.nextInt();
         }

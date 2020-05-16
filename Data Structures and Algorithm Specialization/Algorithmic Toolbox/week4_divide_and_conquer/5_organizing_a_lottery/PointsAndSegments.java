@@ -1,14 +1,31 @@
-import java.util.Scanner;
+import java.util.*;
 
 public class PointsAndSegments {
 
     private static int[] fastCountSegments(int[] starts, int[] ends, int[] points) {
         int[] cnt = new int[points.length];
-        //write your code here
+        Arrays.sort(starts);
+        Arrays.sort(ends);
+        int k=0;
+        for(int x: points) {
+        	int i=0,j=0;
+        	while( i<starts.length) {
+        		if(starts[i]<=x) i++;
+        		else break;
+        	}
+        	while(j<ends.length) {
+        		if(ends[j]<=(x-1)) j++;
+        		else break;
+        	}
+        	cnt[k]=i-j;
+        	k++;
+        }
+        
+        
         return cnt;
     }
 
-    private static int[] naiveCountSegments(int[] starts, int[] ends, int[] points) {
+ /*(   private static int[] naiveCountSegments(int[] starts, int[] ends, int[] points) {
         int[] cnt = new int[points.length];
         for (int i = 0; i < points.length; i++) {
             for (int j = 0; j < starts.length; j++) {
@@ -18,7 +35,7 @@ public class PointsAndSegments {
             }
         }
         return cnt;
-    }
+    }*/
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -36,7 +53,7 @@ public class PointsAndSegments {
             points[i] = scanner.nextInt();
         }
         //use fastCountSegments
-        int[] cnt = naiveCountSegments(starts, ends, points);
+        int[] cnt = fastCountSegments(starts, ends, points);
         for (int x : cnt) {
             System.out.print(x + " ");
         }

@@ -1,19 +1,29 @@
+import java.util.Scanner;
 import java.util.*;
-
 public class LCM {
-  private static long lcm_naive(int a, int b) {
-    for (long l = 1; l <= (long) a * b; ++l)
-      if (l % a == 0 && l % b == 0)
-        return l;
+public static void main(String[] args) {
+Scanner in = new Scanner(System.in);
+int n1 = in.nextInt();
+int n2 = in.nextInt();
 
-    return (long) a * b;
-  }
+System.out.println(lcm(n1,n2));
+}
 
-  public static void main(String args[]) {
-    Scanner scanner = new Scanner(System.in);
-    int a = scanner.nextInt();
-    int b = scanner.nextInt();
-
-    System.out.println(lcm_naive(a, b));
-  }
+public static long lcm(int x, int y) {
+	
+	long i=0;
+	if(x<y) {
+		int temp = y;
+		y = x;
+		x = temp;
+	}
+	while(true) {
+		i++;
+		long r = (x*i)%y;
+		if (r == 0) break;
+		
+	}
+	return x*i;
+	
+}
 }

@@ -2,14 +2,25 @@ import java.util.*;
 
 public class Knapsack {
     static int optimalWeight(int W, int[] w) {
-        //write you code here
-        int result = 0;
-        for (int i = 0; i < w.length; i++) {
-          if (result + w[i] <= W) {
-            result += w[i];
-          }
+    	int n=w.length;
+        int [][] a=new int[ n+1 ][W+1 ];
+        for(int i=1;i<=n;i++) {
+        	for(int j=1; j<=W; j++) {
+        		if(j>=w[i-1]) {
+        			a[i][j]=Math.max(a[i-1][j-w[i-1]]+w[i-1],a[i-1][j]);
+        		}
+        		else {
+        			a[i][j]=a[i-1][j];
+        		}
+        	}
         }
-        return result;
+//        int result = 0;
+//        for (int i = 0; i < w.length; i++) {
+//          if (result + w[i] <= W) {
+//            result += w[i];
+//          }
+//        }
+        return a[n][W];
     }
 
     public static void main(String[] args) {

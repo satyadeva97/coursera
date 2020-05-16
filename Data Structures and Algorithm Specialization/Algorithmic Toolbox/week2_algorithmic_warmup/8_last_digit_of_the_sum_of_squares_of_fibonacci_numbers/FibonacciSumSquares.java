@@ -1,29 +1,30 @@
 import java.util.*;
-
 public class FibonacciSumSquares {
-    private static long getFibonacciSumSquaresNaive(long n) {
-        if (n <= 1)
-            return n;
 
-        long previous = 0;
-        long current  = 1;
-        long sum      = 1;
-
-        for (long i = 0; i < n - 1; ++i) {
-            long tmp_previous = previous;
-            previous = current;
-            current = tmp_previous + current;
-            sum += current * current;
-        }
-
-        return sum % 10;
-    }
-    
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        long n = scanner.nextLong();
-        long s = getFibonacciSumSquaresNaive(n);
-        System.out.println(s);
-    }
+	public static void main(String [] args) {
+		Scanner in = new Scanner(System.in);
+		long n = in.nextLong();
+		System.out.println(sum(n));
 }
-
+	public static long sum(long a) {
+		long prev2 = 0l;
+		long prev1 = 1l;
+		long current,lastdigit,temp = 0;
+		long sum=1;
+		long i=2,quotient,remainder;
+		if(a<2) return a;
+		
+		quotient =  a/60;
+		remainder=  a%60;
+		while(i<61) {
+			current = (prev1%10) + (prev2%10);
+			sum += (current%10)*(current%10);
+			if(i==remainder) temp =sum;
+			if(i==a) return sum%10;		
+			prev2 = prev1;
+			prev1 = current;
+			i++;
+		}
+		return ((sum*quotient)+temp)%10;		
+	}
+}

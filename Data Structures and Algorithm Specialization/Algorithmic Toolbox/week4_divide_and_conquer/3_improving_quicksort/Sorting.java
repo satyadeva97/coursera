@@ -5,16 +5,38 @@ public class Sorting {
     private static Random random = new Random();
 
     private static int[] partition3(int[] a, int l, int r) {
-      //write your code here
-
-
-      int m1 = l;
-      int m2 = r;
+      int x=a[l],j=l,k=l;
+      for(int i=l+1;i<a.length;i++) {
+    	  if(a[i]<x) {
+    		  j++;
+    		  k++;   		  
+    		  int t=a[j];
+    		  a[j]=a[i];
+    		  a[i]=t;
+    		  if(j!=k) {
+    		  a[i]=a[k];
+    		  a[k]=t;
+    		  }
+    		continue;  
+    	  }
+    	  if(a[i]==x) {
+    		  k++;
+    		  int t=a[i];
+    		  a[i]=a[k];
+    		  a[k]=t;
+    		  
+    	  }
+      }
+      int t=a[l];
+	  a[l]=a[j];
+	  a[j]=t;
+      int m1 = j;
+      int m2 = k;
       int[] m = {m1, m2};
       return m;
     }
 
-    private static int partition2(int[] a, int l, int r) {
+ /*   private static int partition2(int[] a, int l, int r) {
         int x = a[l];
         int j = l;
         for (int i = l + 1; i <= r; i++) {
@@ -29,24 +51,25 @@ public class Sorting {
         a[l] = a[j];
         a[j] = t;
         return j;
-    }
+    }*/
 
     private static void randomizedQuickSort(int[] a, int l, int r) {
+    	int m[] = new int[2];
         if (l >= r) {
             return;
         }
         int k = random.nextInt(r - l + 1) + l;
         int t = a[l];
         a[l] = a[k];
-        a[k] = t;
+      a[k] = t;
         //use partition3
-        int m = partition2(a, l, r);
-        randomizedQuickSort(a, l, m - 1);
-        randomizedQuickSort(a, m + 1, r);
+        m = partition3(a, l, r);
+        randomizedQuickSort(a, l, m[0] - 1);
+        randomizedQuickSort(a, m[1] + 1, r);
     }
 
     public static void main(String[] args) {
-        FastScanner scanner = new FastScanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
         int[] a = new int[n];
         for (int i = 0; i < n; i++) {
@@ -58,7 +81,7 @@ public class Sorting {
         }
     }
 
-    static class FastScanner {
+/*    static class FastScanner {
         BufferedReader br;
         StringTokenizer st;
 
@@ -84,6 +107,6 @@ public class Sorting {
         int nextInt() {
             return Integer.parseInt(next());
         }
-    }
+    }*/
 }
 
