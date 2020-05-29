@@ -1,80 +1,44 @@
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
 
+import java.util.*;
 public class HashSubstring {
-
-    private static FastScanner in;
-    private static PrintWriter out;
-
-    public static void main(String[] args) throws IOException {
-        in = new FastScanner();
-        out = new PrintWriter(new BufferedOutputStream(System.out));
-        printOccurrences(getOccurrences(readInput()));
-        out.close();
-    }
-
-    private static Data readInput() throws IOException {
-        String pattern = in.next();
-        String text = in.next();
-        return new Data(pattern, text);
-    }
-
-    private static void printOccurrences(List<Integer> ans) throws IOException {
-        for (Integer cur : ans) {
-            out.print(cur);
-            out.print(" ");
-        }
-    }
-
-    private static List<Integer> getOccurrences(Data input) {
-        String s = input.pattern, t = input.text;
-        int m = s.length(), n = t.length();
-        List<Integer> occurrences = new ArrayList<Integer>();
-        for (int i = 0; i + m <= n; ++i) {
-	    boolean equal = true;
-	    for (int j = 0; j < m; ++j) {
-		if (s.charAt(j) != t.charAt(i + j)) {
-		     equal = false;
- 		    break;
+	static int x = 10000077;
+	static int p = 10000007;
+	public static void main(String [] args) {
+		Scanner in = new Scanner(System.in);
+		String req = in.next();
+		int n = req.length();
+		String tab = in.next();
+		int m = tab.length();
+		long y = 1;
+		long hashr = hashing(req, x, p);
+		long [] hasht = new long[m-n+1];
+		String subs = tab.substring(m-n, m);
+		hasht[(m-n)] = hashing(subs, x, p);
+		for(int j = 0; j < n; j++) {
+			 y = ((y * x) % p);
 		}
-	    }
-            if (equal)
-                occurrences.add(i);
+		for(int i = (m-n)-1; i >= 0; i--) {			
+			long prehash = hasht[i+1]*x + tab.charAt(i) - (tab.charAt(i + n) * (int)y) ;
+			while(prehash < 0) {
+				prehash += p;
+			}
+			hasht[i] = prehash % p;
+		}
+		for(int i = 0; i<= m-n; i++) {
+			if(hasht[i] == hashr) {
+				if(req.equals(tab.substring(i, i+n))) {
+					System.out.print(i + " ");				
+				}
+			}
+		}	
 	}
-        return occurrences;
-    }
-
-    static class Data {
-        String pattern;
-        String text;
-        public Data(String pattern, String text) {
-            this.pattern = pattern;
-            this.text = text;
-        }
-    }
-
-    static class FastScanner {
-        private BufferedReader reader;
-        private StringTokenizer tokenizer;
-
-        public FastScanner() {
-            reader = new BufferedReader(new InputStreamReader(System.in));
-            tokenizer = null;
-        }
-
-        public String next() throws IOException {
-            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                tokenizer = new StringTokenizer(reader.readLine());
-            }
-            return tokenizer.nextToken();
-        }
-
-        public int nextInt() throws IOException {
-            return Integer.parseInt(next());
-        }
-    }
+	
+	private static long hashing(String s, int x, int p) {
+	    long hash = 0;
+	    for (int i = s.length() - 1; i >= 0; --i)
+	        hash = (hash * x + s.charAt(i)) % p;
+	    return hash;
+	}
+	
+	
 }
-

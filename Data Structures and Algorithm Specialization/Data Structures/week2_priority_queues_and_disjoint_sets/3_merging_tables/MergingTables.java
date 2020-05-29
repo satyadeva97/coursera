@@ -1,113 +1,41 @@
-import java.io.*;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.StringTokenizer;
-
+import java.util.*;
 public class MergingTables {
-    private final InputReader reader;
-    private final OutputWriter writer;
 
-    public MergingTables(InputReader reader, OutputWriter writer) {
-        this.reader = reader;
-        this.writer = writer;
-    }
+	public static void main(String[] args) {
+		Scanner in =  new Scanner(System.in);
+		int tables = in.nextInt();
+		int max = Integer.MIN_VALUE;
+		int operations = in.nextInt();
+		int [] rows = new int[tables];
+		for(int i = 0; i< tables ;i++) {
+			rows[i] = in.nextInt();
+				max = Math.max(max, rows[i]);	
+		}
+		int [] parent = new int[rows.length];
+		for(int i =0; i< operations; i++) {
+			int x = in.nextInt();
+			int y = in.nextInt();
+			rows = merge(rows,(x-1),(y-1),parent);
+			max = Math.max(max, rows[y-1]);
+			System.out.println(max);
+	//		System.out.println(Arrays.toString(rows));
+		}
+	//	System.out.println(Arrays.toString(rows));
+		
+	}
+	public static int[] merge(int[] rows, int x, int y, int[] parent) {
+		if(x == y) return rows;
+		if(parent[y] == 0) {
+			parent[y] = -1;	
+		}
+		parent[x] = y;
+		int temp = rows[x];
+		rows[x] = 0;
+		while(parent[x] != -1) {
+			x = parent[x];
+		}
+		rows[x] += temp;
+		return rows;
+	}
 
-    public static void main(String[] args) {
-        InputReader reader = new InputReader(System.in);
-        OutputWriter writer = new OutputWriter(System.out);
-        new MergingTables(reader, writer).run();
-        writer.writer.flush();
-    }
-
-    class Table {
-        Table parent;
-        int rank;
-        int numberOfRows;
-
-        Table(int numberOfRows) {
-            this.numberOfRows = numberOfRows;
-            rank = 0;
-            parent = this;
-        }
-        Table getParent() {
-            // find super parent and compress path
-            return parent;
-        }
-    }
-
-    int maximumNumberOfRows = -1;
-
-    void merge(Table destination, Table source) {
-        Table realDestination = destination.getParent();
-        Table realSource = source.getParent();
-        if (realDestination == realSource) {
-            return;
-        }
-        // merge two components here
-        // use rank heuristic
-        // update maximumNumberOfRows
-    }
-
-    public void run() {
-        int n = reader.nextInt();
-        int m = reader.nextInt();
-        Table[] tables = new Table[n];
-        for (int i = 0; i < n; i++) {
-            int numberOfRows = reader.nextInt();
-            tables[i] = new Table(numberOfRows);
-            maximumNumberOfRows = Math.max(maximumNumberOfRows, numberOfRows);
-        }
-        for (int i = 0; i < m; i++) {
-            int destination = reader.nextInt() - 1;
-            int source = reader.nextInt() - 1;
-            merge(tables[destination], tables[source]);
-            writer.printf("%d\n", maximumNumberOfRows);
-        }
-    }
-
-
-    static class InputReader {
-        public BufferedReader reader;
-        public StringTokenizer tokenizer;
-
-        public InputReader(InputStream stream) {
-            reader = new BufferedReader(new InputStreamReader(stream), 32768);
-            tokenizer = null;
-        }
-
-        public String next() {
-            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    tokenizer = new StringTokenizer(reader.readLine());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            return tokenizer.nextToken();
-        }
-
-        public int nextInt() {
-            return Integer.parseInt(next());
-        }
-
-        public double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        public long nextLong() {
-            return Long.parseLong(next());
-        }
-    }
-
-    static class OutputWriter {
-        public PrintWriter writer;
-
-        OutputWriter(OutputStream stream) {
-            writer = new PrintWriter(stream);
-        }
-
-        public void printf(String format, Object... args) {
-            writer.print(String.format(Locale.ENGLISH, format, args));
-        }
-    }
 }
